@@ -46,8 +46,8 @@ class RecommendResponse(BaseModel):
 
 @app.post("/recommend", response_model=RecommendResponse)
 async def recommend(request: RecommendRequest):
-    if not os.environ.get("OPENAI_API_KEY"):
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY not set")
+    if not os.environ.get("OLLAMA_API_KEY"):
+        raise HTTPException(status_code=500, detail="OLLAMA_API_KEY not set")
 
     history_names = [h.name for h in request.history]
     history_ids = {h.tmdb_id for h in request.history}

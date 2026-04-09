@@ -19,7 +19,8 @@ from openai import OpenAI
 # TODO: Edit these to improve your recommendations
 # ---------------------------------------------------------------------------
 
-MODEL = "gpt-5-nano"
+MODEL = "gemini-3-flash-preview"
+OLLAMA_BASE_URL = "https://ollama.com/v1"
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "tmdb_top1000_movies.csv")
 TOP_MOVIES = pd.read_csv(DATA_PATH).nlargest(40, "vote_count")
@@ -51,7 +52,10 @@ Respond with ONLY a JSON object — no markdown, no extra text — in this exact
 
 
 def call_llm(prompt: str) -> dict:
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    client = OpenAI(
+        api_key=os.environ["OLLAMA_API_KEY"],
+        base_url=OLLAMA_BASE_URL,
+    )
     response = client.chat.completions.create(
         model=MODEL,
         messages=[{"role": "user", "content": prompt}],
